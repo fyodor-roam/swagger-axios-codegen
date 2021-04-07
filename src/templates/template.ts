@@ -221,6 +221,7 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(
     ${parsedParameters && headerParameters && headerParameters.length > 0
       ? `options.headers = {${headerParameters}, ...options.headers }`
       : ''}
+    options.headers = { ...this.headers, ...options.headers }
     const configs:IRequestConfig = getConfigs('${method}', '${contentType}', url, options)
     ${parsedParameters && queryParameters.length > 0 ? 'configs.params = {' + queryParameters.join(',') + '}' : ''}
     let data = ${parsedParameters && bodyParameter && bodyParameter.length > 0
@@ -249,6 +250,10 @@ export function serviceTemplate(name: string, body: string, imports: string[] = 
 
   ${mappedImports}
   export class ${name} {
+      
+    // headers for this instance
+    public headers: any = {};
+  
     ${body}
   }
   `
